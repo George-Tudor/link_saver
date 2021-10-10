@@ -27,6 +27,7 @@ const renderLinks = () => {
                             <div class="d-flex">
                                 <a class="flex-grow-1" href=${link.url} target="_blank">${link.name}</a>
                                 <button type="button" class="delete-link-button btn btn-sm btn-link text-danger">&times;</button>
+                                <a href="link.html?id=${link.id}" class="btn btn-sm btn-link text-danger">Edit</a>
                             </div>
                         </div>
         `;
