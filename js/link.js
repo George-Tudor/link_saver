@@ -22,6 +22,8 @@ let getById = (id) => {
 console.log(getById(linkId));
 
 $(() => {
+    $('#save-link-address').attr("placeholder", getById(linkId);
+
     $(document).on('click', '.save-link-button', function (e) {
         let linkId = getNextId();
         let linkItem = $('#save-link-address').val();

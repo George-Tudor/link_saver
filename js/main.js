@@ -67,12 +67,3 @@ $(() => {
         linksUpdated();
     });
 });
-
-// $(document).on('click', '.delMovie', function (e) {
-//     e.preventDefault();
-//     let currentId = $(this).parent().data('number');
-//     console.log(currentId)
-//     deleteMovie(currentId);
-//     $(this).parent().remove();
-//
-// });
