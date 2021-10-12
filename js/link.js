@@ -21,16 +21,24 @@ let getById = (id) => {
 }
 console.log(getById(linkId));
 
+let fillLinkData = () => {
+    $('#save-link-address').attr("value", getById(linkId).url);
+    $('#save-link-title').attr("value", getById(linkId).name);
+
+}
+fillLinkData();
+
 $(() => {
-    $('#save-link-address').attr("placeholder", getById(linkId);
 
     $(document).on('click', '.save-link-button', function (e) {
-        let linkId = getNextId();
+
         let linkItem = $('#save-link-address').val();
         let linkName = $('#save-link-title').val();
         let linkObj = {id: linkId, url: linkItem, name: linkName};
-        links.push(linkObj);
+        console.log(linkObj);
+        links.splice(linkId -1, 0, linkObj);
         linksUpdated();
+        console.log(links);
     });
 });
 

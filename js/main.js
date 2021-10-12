@@ -23,11 +23,11 @@ const renderLinks = () => {
     let html = '';
     links.forEach(link => {
         html += `
-                        <div class="link-card card mb-1 p-2" data-id="${link.id}" style="width: 18rem">
+                        <div class="link-card card m-1 p-2" data-id="${link.id}" style="width: 18rem">
                             <div class="d-flex">
                                 <a class="flex-grow-1" href=${link.url} target="_blank">${link.name}</a>
-                                <button type="button" class="delete-link-button btn btn-sm btn-link text-danger">&times;</button>
                                 <a href="link.html?id=${link.id}" class="btn btn-sm btn-link text-danger">Edit</a>
+                                <button type="button" class="delete-link-button btn btn-sm btn-link text-danger">&times;</button>
                             </div>
                         </div>
         `;
