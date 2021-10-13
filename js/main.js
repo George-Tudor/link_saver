@@ -5,8 +5,8 @@ if(window.localStorage.links) {
     links = [
         {id: 1, url: 'https://css-tricks.com/almanac/properties/a/align-self/', name: 'align-self | CSS-Tricks'},
         {id: 2, url: 'https://www.rdegges.com/2012/how-to-have-fun-programming/', name: 'Randall Degges - How to Have Fun Programming'},
-        // {id: 3, url: 'https://flukeout.github.io/CSS', name: 'Diner - Where we feast on CSS Selectors!'},
-        {id: 4, url: 'https://threejs-journey.xyz/Three.js', name: 'Journey — Learn WebGL with Three.js'},
+        //{id: 3, url: 'https://flukeout.github.io/CSS', name: 'Diner - Where we feast on CSS Selectors!'},
+        //{id: 4, url: 'https://threejs-journey.xyz/Three.js', name: 'Journey — Learn WebGL with Three.js'},
         {id: 5, url: 'https://pcaro.es/p/hermit/', name: 'Pablo Caro - Hermit: a font for programmers, by a programmer'},
         {id: 6, url: 'https://mdbootstrap.com/docs/b4/jquery/components/tabs/', name: 'Bootstrap 4 Tabs - examples &amp; tutorial. Basic &amp; advanced usage - Material Design for Bootstrap'},
         {id: 7, url: 'https://codeburst.io/javascript-what-is-short-circuit-evaluation-ff22b2f5608c', name: ' JavaScript: What is short-circuit evaluation? | by Brandon Morelli | codeburst'},
@@ -17,8 +17,6 @@ if(window.localStorage.links) {
         {id: 25, url:  'https://oscarotero.com/jquery/', name: 'jQuery Cheat Sheet'}
     ];
 }
-
-const getLinkInfo = `http://api.linkpreview.net/?key=${linkPreviewKey}&q=${links.url}`;
 
 const renderLinks = () => {
     let html = '';
@@ -39,8 +37,9 @@ const renderLinks = () => {
                         </div>
         `;
             });
-        $('#links').html(html);
-    });
+    })
+        .catch(error => console.error(error));
+    $('#links').html(html);
 }
 let getNextId = () => {
     let maxId = 0;
