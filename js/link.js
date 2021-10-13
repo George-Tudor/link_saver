@@ -29,14 +29,15 @@ let fillLinkData = () => {
 fillLinkData();
 
 $(() => {
-
+    const index = links.map(link => link.id).indexOf(linkId);
+    // links[index] = updatedLink;
     $(document).on('click', '.save-link-button', function (e) {
 
         let linkItem = $('#save-link-address').val();
         let linkName = $('#save-link-title').val();
         let linkObj = {id: linkId, url: linkItem, name: linkName};
         console.log(linkObj);
-        links.splice(linkId -1, 0, linkObj);
+        links[index] = linkObj;
         linksUpdated();
         console.log(links);
     });
