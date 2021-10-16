@@ -2,6 +2,11 @@
 img {
     vertical-align: middle;
     border-style: none;
-    height: 150px;
-    width: auto;
+    height: 130px;
+    max-width: 100%;
+}
+
+.item-description {
+    max-height: 180px;
+    overflow-y: hidden;
 }

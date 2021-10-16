@@ -25,11 +25,14 @@ const renderLinks = async () => {
         }
     $('#links').html(html);
 
-    function createCard(linkObj) {
-        let getLinkInfo = `http://api.linkpreview.net/?key=${linkPreviewKey}&q=${linkObj.url}`;
+    function createCard(linkItem) {
+        let getLinkInfo = `http://api.linkpreview.net/?key=${linkPreviewKey}&q=${linkItem.url}`;
         return fetch(getLinkInfo)
             .then(res => res.json())
-            .then(linkItem => {
+            .then(result => {
+                console.log(JSON.stringify(result, null, 4));
+                linkItem.image = result.image;
+                linkItem.description = result.description;
                 return render(linkItem);
             })
             .catch(error => console.error(error));
@@ -38,9 +41,10 @@ const renderLinks = async () => {
     function render(linkItem) {
         return `
             <div class="link-card card m-1 p-2" data-id="${linkItem.id}" style="width: 18rem">
-                <div class="d-flex">
-                    <img src="${linkItem.image}" alt="image">
-                    <a class="flex-grow-1" href=${linkItem.url} target="_blank">${linkItem.name}</a>
+                <div>
+                    <img src="${linkItem.image}" alt="image" class="d-block">
+                    <a class="d-block" href=${linkItem.url} target="_blank">${linkItem.name}</a>
+                    <p class="item-description">${linkItem.description}</p>
                     <a href="link.html?id=${linkItem.id}" class="btn btn-sm btn-link text-danger">Edit</a>
                     <button type="button" class="delete-link-button btn btn-sm btn-link text-danger">&times;</button>
                 </div>
