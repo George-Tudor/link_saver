@@ -31,7 +31,11 @@ const renderLinks = async () => {
             .then(res => res.json())
             .then(result => {
                 console.log(JSON.stringify(result, null, 4));
-                linkItem.image = result.image;
+                if (result.image) {
+                    linkItem.image = result.image
+                } else {
+                    linkItem.image = "../img/missing-image.jpg";
+                }
                 linkItem.description = result.description;
                 return render(linkItem);
             })
@@ -42,7 +46,7 @@ const renderLinks = async () => {
         return `
             <div class="link-card card m-1 p-2" data-id="${linkItem.id}" style="width: 18rem">
                 <div>
-                    <img src="${linkItem.image}" alt="image" class="d-block">
+                    <img src="${linkItem.image}"  alt="image" class="d-block">
                     <a class="d-block" href=${linkItem.url} target="_blank">${linkItem.name}</a>
                     <p class="item-description">${linkItem.description}</p>
                     <a href="link.html?id=${linkItem.id}" class="btn btn-sm btn-link text-danger">Edit</a>

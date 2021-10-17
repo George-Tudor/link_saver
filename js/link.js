@@ -28,6 +28,7 @@ let fillLinkData = () => {
 }
 fillLinkData();
 
+
 $(() => {
     const index = links.map(link => link.id).indexOf(linkId);
     // links[index] = updatedLink;
