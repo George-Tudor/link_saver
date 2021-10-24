@@ -54,36 +54,8 @@ const renderLinks = async () => {
                 </div>
             </div>`;
     }
-
-
-
-
-
-
-
-
-
-
-    // links.forEach(link => {
-    //     let getLinkInfo = `http://api.linkpreview.net/?key=${linkPreviewKey}&q=${link.url}`;
-    //     fetch(getLinkInfo)
-    //         .then(res => res.json())
-    //         .then(linkItem => {
-    //             html += `
-    //                     <div class="link-card card m-1 p-2" data-id="${linkItem.id}" style="width: 18rem">
-    //                         <div class="d-flex">
-    //                             <img src="${linkItem.image}" alt="image">
-    //                             <a class="flex-grow-1" href=${linkItem.url} target="_blank">${linkItem.name}</a>
-    //                             <a href="link.html?id=${linkItem.id}" class="btn btn-sm btn-link text-danger">Edit</a>
-    //                             <button type="button" class="delete-link-button btn btn-sm btn-link text-danger">&times;</button>
-    //                         </div>
-    //                     </div>`;
-    //         })
-    //         .catch(error => console.error(error));
-    // });
-    // $('#links').html(html);
-    // console.log('done', html.length);
 }
+
 let getNextId = () => {
     let maxId = 0;
     links.forEach(link => {
@@ -115,4 +87,8 @@ $(() => {
         links = links.filter(link => link.id !== deleteLinkId);
         linksUpdated();
     });
+
+    $('.import-bookmarks').on('click', (e) => {
+        $('#file-input').trigger('click');
+     });
 });
