@@ -1,35 +1,38 @@
-let links;
-if(window.localStorage.links) {
-    links = JSON.parse(window.localStorage.links);
-} else {
-    links = [
-        {id: 1, url: 'https://css-tricks.com/almanac/properties/a/align-self/', name: 'align-self | CSS-Tricks'},
-        {id: 2, url: 'https://www.rdegges.com/2012/how-to-have-fun-programming/', name: 'Randall Degges - How to Have Fun Programming'},
-        // {id: 3, url: 'https://flukeout.github.io/CSS', name: 'Diner - Where we feast on CSS Selectors!'},
-        {id: 4, url: 'https://threejs-journey.xyz/Three.js', name: 'Journey — Learn WebGL with Three.js'},
-        {id: 5, url: 'https://pcaro.es/p/hermit/', name: 'Pablo Caro - Hermit: a font for programmers, by a programmer'},
-        {id: 6, url: 'https://mdbootstrap.com/docs/b4/jquery/components/tabs/', name: 'Bootstrap 4 Tabs - examples &amp; tutorial. Basic &amp; advanced usage - Material Design for Bootstrap'},
-        {id: 7, url: 'https://codeburst.io/javascript-what-is-short-circuit-evaluation-ff22b2f5608c', name: ' JavaScript: What is short-circuit evaluation? | by Brandon Morelli | codeburst'},
-        {id: 8, url: 'https://www.spillover.com/', name: 'Spillover | Restaurant Digital Software'},
-        {id: 9, url: 'https://www.eatthis.com/best-healthy-cooking-hacks/', name: '21 Best Healthy Cooking Hacks of All Time | Eat This Not That'},
-        {id: 10, url: 'https://www.githubstatus.com/', name: ' GitHub Status'},
-        {id: 11, url: 'https://regex101.com/', name: 'regex101: build, test, and debug regex'},
-        {id: 25, url:  'https://oscarotero.com/jquery/', name: 'jQuery Cheat Sheet'}
-    ];
-}
+const firebase = 'https://movies-30d6e-default-rtdb.firebaseio.com/';
+
+let links = [];
+let keys = [];
+
+const getLinks = () => fetch(firebase + 'link.json')
+    .then(res => res.json())
+    .then(result => {
+        let linkArray = Object.entries(result)
+        console.log(linkArray)
+        let [l, k] = parseLinks(linkArray);
+        links = l;
+        keys = k;
+        console.log(keys)
+        console.log(links)
+    })
 
 const renderLinks = async () => {
+    await getLinks();
     let html = '';
         for(let i = 0; i < links.length; i++) {
-            html+= await createCard(links[i])
+            if(links[i].image !== undefined) {
+                html += render(links[i])
+            } else {
+                html+= await createCard(links[i], i)
+            }
         }
     $('#links').html(html);
 
-    function createCard(linkItem) {
+    async function createCard(linkItem, index) {
         let getLinkInfo = `http://api.linkpreview.net/?key=${linkPreviewKey}&q=${linkItem.url}`;
         return fetch(getLinkInfo)
             .then(res => res.json())
-            .then(result => {
+            .then(async result => {
+
                 console.log(JSON.stringify(result, null, 4));
                 if (result.image) {
                     linkItem.image = result.image
@@ -37,10 +40,24 @@ const renderLinks = async () => {
                     linkItem.image = "../img/missing-image.jpg";
                 }
                 linkItem.description = result.description;
+                await fetch(firebase + 'link/' + keys[index] + '.json', {
+                    method: 'PATCH',
+                    body: JSON.stringify(linkItem)
+                })
+
+
                 return render(linkItem);
             })
             .catch(error => console.error(error));
     }
+
+    //
+    // loop through firebase keys
+    // create variable for link data
+    // fetch link data from linkpreview api and store in variables
+    // for each key, make patch request to firebase url + current key
+
+
 
     function render(linkItem) {
         return `
@@ -56,6 +73,15 @@ const renderLinks = async () => {
     }
 }
 
+async function handlePost(linkItem) {
+    let getLinkInfo = `http://api.linkpreview.net/?key=${linkPreviewKey}&q=${linkItem.url}`;
+    fetch(getLinkInfo)
+        .then(res => res.json())
+        .then(result => {
+            fetch(firebase + 'link/')
+        })
+}
+
 let getNextId = () => {
     let maxId = 0;
     links.forEach(link => {
@@ -67,11 +93,28 @@ let getNextId = () => {
 }
 
 let linksUpdated = () => {
-    window.localStorage.links = JSON.stringify(links);
+
     renderLinks();
 }
 
+function parseLinks(linkData) {
+    let parsedLinks = [];
+    let parsedKeys = [];
+    linkData.forEach(([key, link]) => {
+        parsedKeys.push(key);
+        parsedLinks.push(link);
+    })
+    return [parsedLinks, parsedKeys];
+}
+
+
+
+
+
 $(() => {
+
+
+
     renderLinks();
     $(document).on('click', '.add-link-button', function (e) {
         let linkId = getNextId();
@@ -91,4 +134,9 @@ $(() => {
     $('.import-bookmarks').on('click', (e) => {
         $('#file-input').trigger('click');
      });
+
+    $(document).on('change', '#file-input', e => {
+
+    })
+
 });
